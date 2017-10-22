@@ -1,0 +1,17 @@
+<?php
+if(defined('WP_UNINSTALL_PLUGIN')){
+ $OptionName='xxx';
+ if(is_multisite()){
+	$OriginalBlogId=get_current_BlogId();
+	$o=&$GLOBALS['wpdb'];
+	foreach(($o->get_col('SELECT BlogId FROM '.($o->blogs))) as $id){
+		switch_to_blog($id);
+		delete_site_option($OptionName);  
+	};
+	switch_to_blog($OriginalBlogId); 
+ }else{
+	delete_option($OptionName);
+ };
+}else{
+ exit;
+};
